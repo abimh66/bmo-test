@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 function App() {
   const [todos, setTodos] = useState([]);
   const [search, setSearch] = useState('');
+  const [newTodo, setNewTodo] = useState('');
 
   useEffect(() => {
     async function getTodos() {
@@ -24,24 +25,40 @@ function App() {
     setTodos((todoss) => todoss.filter((todo) => todo.id !== id));
   }
 
+  function addTodo() {
+    if (newTodo === '') return;
+
+    const todo = {
+      title: newTodo,
+      id: Math.random(),
+      completed: false,
+      userId: 1,
+    };
+
+    setTodos((todoss) => [...todoss, todo]);
+    setNewTodo('');
+  }
+
   return (
-    <div className="flex justify-center  flex-col text-center">
-      <div className="p-5 text-xl bg-[#0ab5ab] ">
-        <h1 className=" font-bold text-white">Todo App</h1>
+    <div className="flex justify-center  flex-col ">
+      <div className="p-5 flex gap-1 justify-center text-xl bg-[#0ab5ab] ">
+        <h1 className=" font-bold text-center text-white">Todo App</h1>
         <input
           className="text-[#151515] py-1 px-3"
           type="text"
           placeholder="Search..."
           onChange={(e) => setSearch(e.target.value)}
-          // onChange={(e) =>
-          //   setTodos((todoss) => {
-          //     console.log(e.target.value);
-          //     return todoss.filter((todo) =>
-          //       todo.title.includes(e.target.value)
-          //     );
-          //   })
-          // }
         />
+        <div>
+          <input
+            className="text-[#151515] py-1 px-3"
+            type="text"
+            value={newTodo}
+            placeholder="New Todo..."
+            onChange={(e) => setNewTodo(e.target.value)}
+          />
+          <button onClick={addTodo}>Add New Todo</button>
+        </div>
       </div>
       <ul className="mx-auto flex flex-col gap-2 py-5 bg-[#151515] text-white">
         {todos.length !== 0 &&
